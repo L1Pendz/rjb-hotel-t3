@@ -1,3 +1,5 @@
+"use client";
+
 import { createContext, useReducer, type Dispatch, type ReactNode } from "react";
 import type { Room } from "~/types/index";
 
