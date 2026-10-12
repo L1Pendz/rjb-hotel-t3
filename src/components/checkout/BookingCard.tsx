@@ -3,10 +3,11 @@ import { Lock } from "lucide-react";
 import { ConfirmButton } from "./ConfirmButton";
 import type { Quote } from "~/lib/pricing";
 import { formatPeso } from "~/lib/money";
-import { typeLabel, type Room } from "~/types/index";
+import { typeLabel, type RoomType } from "~/types/index";
+import type { RouterOutputs } from "~/trpc/react";
 
 interface BookingCardProps {
-  room: Room;
+  room: RouterOutputs["room"]["getById"];
   quote: Quote;
   pending: boolean;
 }
@@ -29,16 +30,16 @@ export const BookingCard: React.FC<BookingCardProps> = ({
       <div className="flex-col divide-y-2 divide-black bg-gray-200 p-3">
         <div className="flex flex-col">
           <p className="text-xs font-semibold text-orange-500">
-            {typeLabel(room.type).toUpperCase()} | ROOM {room.number}
+            {typeLabel(room.type as RoomType).toUpperCase()} | ROOM{" "}
+            {room.number}
           </p>
           <div className="flex items-center justify-between gap-4 pb-5">
             <div>
               <p className="text-2xl font-bold">{room.name}</p>
-              <p className="text-xs text-gray-500">{room.description}</p>
             </div>
             <div>
               <p className="text-2xl font-bold">
-                {formatPeso(room.nightlyRate)}
+                {formatPeso(String(room.nightlyRate))}
               </p>
               <p className="text-xs text-gray-500">per night</p>
             </div>
@@ -52,7 +53,7 @@ export const BookingCard: React.FC<BookingCardProps> = ({
             <div>
               <p>Room rate</p>
               <p className="text-xs text-gray-500">
-                {formatPeso(room.nightlyRate)} x {quote.nights}{" "}
+                {formatPeso(String(room.nightlyRate))} x {quote.nights}{" "}
                 {quote.nights === 1 ? "night" : "nights"}
               </p>
             </div>
@@ -86,9 +87,8 @@ export const BookingCard: React.FC<BookingCardProps> = ({
             </p>
           </div>
           <p className="text-xs text-gray-500">
-            Plans change? Cancel from your booking page any time before
-            check-in and anything paid is refunded to the original payment
-            method.
+            Plans change? Cancel from your booking page any time before check-in
+            and anything paid is refunded to the original payment method.
           </p>
         </div>
       </div>

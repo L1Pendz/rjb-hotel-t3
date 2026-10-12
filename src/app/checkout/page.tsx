@@ -1,58 +1,29 @@
 "use client";
 
-import { useEffect, useReducer, useState } from "react";
+import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-import { fetchRoom } from "~/tempApi/roomService";
-import { createReservation } from "~/tempApi/reservationService";
 import { BookingCard } from "~/components/checkout/BookingCard";
 import { GuestDetails } from "~/components/checkout/GuestDetails";
 import { StayDetails } from "~/components/booking/StayDetails";
 import { addDays, nights, today } from "~/lib/dates";
 import { quoteStay } from "~/lib/pricing";
 import { parseSearch, toSearchParams } from "~/lib/search";
-import type { Room } from "~/types/index";
-
-interface State {
-  room: Room | null;
-  loading: boolean;
-  error: string | null;
-}
-
-type Action =
-  | { type: "FETCH_START" }
-  | { type: "FETCH_SUCCESS"; payload: Room }
-  | { type: "FETCH_ERROR"; payload: string };
-
-const initialState: State = {
-  room: null,
-  loading: true,
-  error: null,
-};
-
-const roomReducer = (state: State, action: Action): State => {
-  switch (action.type) {
-    case "FETCH_START":
-      return { ...state, loading: true, error: null };
-    case "FETCH_SUCCESS":
-      return { ...state, loading: false, room: action.payload };
-    case "FETCH_ERROR":
-      return { ...state, loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
+import { api } from "~/trpc/react";
 
 // Review and confirm. Submitting holds the room and opens Xendit's hosted
 // checkout — the card is entered on their page and never reaches this app.
 export default function CheckoutPage() {
   const searchParams = useSearchParams();
-  const [state, dispatch] = useReducer(roomReducer, initialState);
-  const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
 
   const roomId = searchParams.get("room") ?? "";
+  const roomQuery = api.room.getById.useQuery(
+    { id: roomId },
+    { enabled: Boolean(roomId) },
+  );
+  const createReservation = api.reservation.create.useMutation();
 
   // The catalog can be browsed without dates, so default to one night starting
   // today. The same dates go into the request, which is why the page and the
@@ -67,35 +38,15 @@ export default function CheckoutPage() {
   // room, not a search they never ran.
   const backHref = `/?${toSearchParams(query)}`;
 
-  useEffect(() => {
-    const loadRoom = async () => {
-      if (!roomId) {
-        dispatch({ type: "FETCH_ERROR", payload: "No room chosen" });
-        return;
-      }
-
-      dispatch({ type: "FETCH_START" });
-
-      try {
-        const data = await fetchRoom(roomId);
-        dispatch({ type: "FETCH_SUCCESS", payload: data });
-      } catch (caught) {
-        dispatch({ type: "FETCH_ERROR", payload: (caught as Error).message });
-      }
-    };
-    loadRoom();
-  }, [roomId]);
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const data = new FormData(event.currentTarget);
 
-    setPending(true);
     setError("");
 
     try {
-      const { invoiceUrl } = await createReservation({
+      const { invoiceUrl } = await createReservation.mutateAsync({
         roomId,
         guestName: String(data.get("guestName") ?? ""),
         guestCount: query.guests,
@@ -110,25 +61,31 @@ export default function CheckoutPage() {
       window.location.assign(invoiceUrl);
     } catch (caught) {
       setError((caught as Error).message);
-      setPending(false);
     }
   };
 
-  if (state.loading)
-    return <p className="py-10 text-gray-500">Loading room...</p>;
-
-  if (state.error || !state.room)
+  if (!roomId)
     return (
       <p role="alert" className="py-10 text-orange-700">
-        {state.error ?? "That room is no longer listed."}
+        No room chosen
       </p>
     );
 
-  const room = state.room;
+  if (roomQuery.isLoading)
+    return <p className="py-10 text-gray-500">Loading room...</p>;
+
+  if (roomQuery.error || !roomQuery.data)
+    return (
+      <p role="alert" className="py-10 text-orange-700">
+        {roomQuery.error?.message ?? "That room is no longer listed."}
+      </p>
+    );
+
+  const room = roomQuery.data;
 
   // Display only. The API recomputes this from the stored rate before it writes
   // anything or asks Xendit for an amount.
-  const quote = quoteStay(room.nightlyRate, nights(checkIn, checkOut));
+  const quote = quoteStay(String(room.nightlyRate), nights(checkIn, checkOut));
 
   return (
     <div className="flex-col">
@@ -137,7 +94,9 @@ export default function CheckoutPage() {
           <p className="text-xs font-medium text-orange-500">
             RESERVATION CHECKOUT
           </p>
-          <h1 className="text-3xl font-bold sm:text-4xl">Review &amp; confirm</h1>
+          <h1 className="text-3xl font-bold sm:text-4xl">
+            Review &amp; confirm
+          </h1>
         </div>
         <Link
           href={backHref}
@@ -160,7 +119,11 @@ export default function CheckoutPage() {
             <GuestDetails />
           </div>
           <div className="flex-1 lg:sticky lg:top-4">
-            <BookingCard room={room} quote={quote} pending={pending} />
+            <BookingCard
+              room={room}
+              quote={quote}
+              pending={createReservation.isPending}
+            />
           </div>
         </div>
 
