@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useReducer, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -44,7 +46,7 @@ const roomReducer = (state: State, action: Action): State => {
 
 // Review and confirm. Submitting holds the room and opens Xendit's hosted
 // checkout — the card is entered on their page and never reaches this app.
-export const CheckoutPage: React.FC = () => {
+export default function CheckoutPage() {
   const searchParams = useSearchParams();
   const [state, dispatch] = useReducer(roomReducer, initialState);
   const [pending, setPending] = useState(false);
@@ -173,4 +175,4 @@ export const CheckoutPage: React.FC = () => {
       </form>
     </div>
   );
-};
+}

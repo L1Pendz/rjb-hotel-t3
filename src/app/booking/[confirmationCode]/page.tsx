@@ -1,3 +1,5 @@
+"use client";
+
 import { useCallback, useEffect, useReducer, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -50,7 +52,7 @@ const reservationReducer = (state: State, action: Action): State => {
 // shareable, so it only ever reports the status the webhook already wrote. A
 // booking that still reads PENDING here is one Xendit has not told the API
 // about yet, which in development usually means the tunnel is not running.
-export const ConfirmationPage: React.FC = () => {
+export default function ConfirmationPage() {
   const { confirmationCode } = useParams<{ confirmationCode: string }>();
   const searchParams = useSearchParams();
   const [state, dispatch] = useReducer(reservationReducer, initialState);
@@ -346,4 +348,4 @@ export const ConfirmationPage: React.FC = () => {
       </div>
     </div>
   );
-};
+}

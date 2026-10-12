@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -34,7 +36,7 @@ const formatCode = (raw: string, previous: string) => {
 
 // Code lookup, which is the whole of "my bookings" when guests have no
 // accounts. The code is the only thing tying a person to a reservation.
-export const FindBookingPage: React.FC = () => {
+export default function FindBookingPage() {
   const router = useRouter();
   const [code, setCode] = useState("");
   const [missed, setMissed] = useState(false);
@@ -107,4 +109,4 @@ export const FindBookingPage: React.FC = () => {
       </form>
     </div>
   );
-};
+}
