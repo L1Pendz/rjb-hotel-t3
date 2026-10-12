@@ -59,7 +59,7 @@ export const toSearchParams = (query: RoomQuery): URLSearchParams => {
 export const checkoutHref = (roomId: string, query: RoomQuery): string => {
   const params = toSearchParams(query);
   params.set("room", roomId);
-  return `/booking/checkout?${params.toString()}`;
+  return `/checkout?${params.toString()}`;
 };
 
 // The folio is keyed on the confirmation code rather than the reservation's
