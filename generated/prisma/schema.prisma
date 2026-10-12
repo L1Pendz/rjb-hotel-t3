@@ -73,3 +73,32 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+model Room {
+  id           String        @id @default(cuid())
+  number       String        @unique
+  name         String
+  type         String // STANDARD, DELUXE, SUITE
+  capacity     Int
+  amenities    String[]
+  imageUrl     String?
+  nightlyRate  Int // in pesos
+  reservations Reservation[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Reservation {
+  id               String   @id @default(cuid())
+  confirmationCode String   @unique
+  guestName        String
+  guestCount       Int
+  checkIn          DateTime @db.Date
+  checkOut         DateTime @db.Date
+  totalAmount      Int // in pesos
+  status           String   @default("PENDING") // PENDING, CONFIRMED, CANCELLED
+  roomId           String
+  room             Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}

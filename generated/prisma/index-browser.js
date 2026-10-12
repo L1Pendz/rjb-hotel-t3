@@ -166,6 +166,33 @@ exports.Prisma.VerificationTokenScalarFieldEnum = {
   expires: 'expires'
 };
 
+exports.Prisma.RoomScalarFieldEnum = {
+  id: 'id',
+  number: 'number',
+  name: 'name',
+  type: 'type',
+  capacity: 'capacity',
+  amenities: 'amenities',
+  imageUrl: 'imageUrl',
+  nightlyRate: 'nightlyRate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ReservationScalarFieldEnum = {
+  id: 'id',
+  confirmationCode: 'confirmationCode',
+  guestName: 'guestName',
+  guestCount: 'guestCount',
+  checkIn: 'checkIn',
+  checkOut: 'checkOut',
+  totalAmount: 'totalAmount',
+  status: 'status',
+  roomId: 'roomId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -187,7 +214,9 @@ exports.Prisma.ModelName = {
   Account: 'Account',
   Session: 'Session',
   User: 'User',
-  VerificationToken: 'VerificationToken'
+  VerificationToken: 'VerificationToken',
+  Room: 'Room',
+  Reservation: 'Reservation'
 };
 
 /**
