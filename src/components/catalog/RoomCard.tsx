@@ -2,46 +2,26 @@ import Link from "next/link";
 import { UserRound } from "lucide-react";
 import { MoveRight } from "lucide-react";
 
-import { formatStayDate } from "~/lib/dates";
 import { formatPeso } from "~/lib/money";
-import { typeLabel, type Room } from "~/types/index";
+import { typeLabel, type RoomType } from "~/types/index";
+import type { RouterOutputs } from "~/trpc/react";
 
 interface RoomCardProps {
-  room: Room;
+  room: RouterOutputs["room"]["getAll"][number];
   href: string;
-  // True when the guest picked dates, so this room is known to be free for them.
-  searched: boolean;
 }
 
-/**
- * One room on the catalog.
- *
- * The rate is formatted here rather than arriving pre-formatted. The Next
- * version had the server attach a `nightlyRateLabel`; the API returns the raw
- * `NUMERIC` string instead, and formatting stays a display concern.
- */
-export const RoomCard: React.FC<RoomCardProps> = ({ room, href, searched }) => {
-  // With dates chosen the API already filtered to what is free for them.
-  // Without, the room is only bookable if nothing holds it tonight.
-  const bookable = searched || room.availableTonight;
-
+// One room on the catalog. The backend already left out booked rooms.
+export const RoomCard: React.FC<RoomCardProps> = ({ room, href }) => {
   return (
     <div className="relative flex aspect-6/5 w-full flex-col">
       <div className="absolute top-0 left-0 bg-orange-500 p-2 text-xs font-semibold tracking-widest text-white">
-        {typeLabel(room.type)}
+        {typeLabel(room.type as RoomType)}
       </div>
-
-      {bookable ? null : (
-        <div className="absolute top-0 right-0 z-10 bg-gray-700 p-2 text-xs font-semibold tracking-widest text-white">
-          {room.bookedUntil
-            ? `Booked to ${formatStayDate(room.bookedUntil).replace(/^\w{3}, /, "")}`
-            : "Booked"}
-        </div>
-      )}
 
       <div className="h-1/2 overflow-hidden">
         <img
-          className={`h-full w-full object-cover ${bookable ? "" : "opacity-50 grayscale"}`}
+          className="h-full w-full object-cover"
           src={room.imageUrl ?? "/rooms/default.jpg"}
           alt={room.name}
         />
@@ -72,29 +52,16 @@ export const RoomCard: React.FC<RoomCardProps> = ({ room, href, searched }) => {
 
         <div className="flex items-center justify-between border-t-2">
           <div>
-            <p className="text-xl font-bold">{formatPeso(room.nightlyRate)}</p>
+            <p className="text-xl font-bold">{formatPeso(String(room.nightlyRate))}</p>
             <p className="text-xs text-gray-500">per night</p>
           </div>
-          {bookable ? (
-            <Link
-              href={href}
-              className="flex items-center gap-1 bg-orange-500 p-2 text-xs font-semibold tracking-widest text-white"
-            >
-              <span>Book Now</span>
-              <MoveRight className="size-3" />
-            </Link>
-          ) : (
-            // Not free tonight, but free some other night. Sending the guest to
-            // the search is honest — a Book Now here would be refused, and
-            // hiding the room would hide a room they could still have.
-            <a
-              href="#stay-search"
-              className="flex items-center gap-1 border border-gray-400 p-2 text-xs font-semibold tracking-widest text-gray-600 hover:border-orange-500 hover:text-orange-500"
-            >
-              <span>Other dates</span>
-              <MoveRight className="size-3" />
-            </a>
-          )}
+          <Link
+            href={href}
+            className="flex items-center gap-1 bg-orange-500 p-2 text-xs font-semibold tracking-widest text-white"
+          >
+            <span>Book Now</span>
+            <MoveRight className="size-3" />
+          </Link>
         </div>
       </div>
     </div>
