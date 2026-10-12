@@ -3,7 +3,6 @@ import "~/styles/globals.css";
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
 
-import { RoomProvider } from "~/tempContext/RoomContext";
 import { TRPCReactProvider } from "~/trpc/react";
 import { GuestNavbar } from "~/components/layout/GuestNavbar";
 import { GuestFooter } from "~/components/layout/GuestFooter";
@@ -26,11 +25,9 @@ export default function RootLayout({
     <html lang="en" className={`${geist.variable}`}>
       <body>
         <TRPCReactProvider>
-          <RoomProvider>
             <GuestNavbar />
             <main>{children}</main>
             <GuestFooter />
-          </RoomProvider>
         </TRPCReactProvider>
       </body>
     </html>

@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { fetchReservationByCode } from "~/tempApi/reservationService";
+import { TRPCClientError } from "@trpc/client";
+import { api } from "~/trpc/react";
 
 const PREFIX = "IKX";
 
@@ -29,7 +30,10 @@ const formatCode = (raw: string, previous: string) => {
   const kept = clean
     .replace(/[^A-Z]/g, "")
     .split("")
-    .reduce((acc, letter) => (PREFIX[acc.length] === letter ? acc + letter : acc), "");
+    .reduce(
+      (acc, letter) => (PREFIX[acc.length] === letter ? acc + letter : acc),
+      "",
+    );
 
   return kept === PREFIX && !deleting ? `${PREFIX}-` : kept;
 };
@@ -40,7 +44,9 @@ export default function FindBookingPage() {
   const router = useRouter();
   const [code, setCode] = useState("");
   const [missed, setMissed] = useState(false);
+  const [error, setError] = useState("");
   const [searching, setSearching] = useState(false);
+  const utils = api.useUtils();
 
   // A half-typed code is not worth a round trip, and "no booking matches that
   // code" is a misleading thing to say about `IKX-16`.
@@ -53,15 +59,25 @@ export default function FindBookingPage() {
 
     setSearching(true);
     setMissed(false);
+    setError("");
 
     try {
-      await fetchReservationByCode(code);
+      await utils.reservation.getByCode.fetch({ code });
       router.push(`/booking/${encodeURIComponent(code)}`);
-    } catch {
+    } catch (caught) {
       // A mistyped code is a typo, not an error page. The response is also
       // identical whether the code exists or not, so this form cannot be used
       // to enumerate bookings.
-      setMissed(true);
+      if (
+        caught instanceof TRPCClientError &&
+        caught.data?.code === "NOT_FOUND"
+      ) {
+        setMissed(true);
+      } else {
+        setError(
+          caught instanceof Error ? caught.message : "Unable to find booking.",
+        );
+      }
       setSearching(false);
     }
   };
@@ -104,6 +120,11 @@ export default function FindBookingPage() {
           <p role="alert" className="mt-3 text-sm text-orange-700">
             No booking matches that code. Check it against your confirmation
             email.
+          </p>
+        ) : null}
+        {error ? (
+          <p role="alert" className="mt-3 text-sm text-orange-700">
+            {error}
           </p>
         ) : null}
       </form>
