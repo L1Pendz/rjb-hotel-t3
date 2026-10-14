@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { TRPCClientError } from "@trpc/client";
+import type { AppRouter } from "~/server/api/root";
 import { api } from "~/trpc/react";
 
 const PREFIX = "IKX";
@@ -70,7 +71,7 @@ export default function FindBookingPage() {
       // to enumerate bookings.
       if (
         caught instanceof TRPCClientError &&
-        caught.data?.code === "NOT_FOUND"
+        (caught as TRPCClientError<AppRouter>).data?.code === "NOT_FOUND"
       ) {
         setMissed(true);
       } else {

@@ -2,6 +2,7 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { TRPCError } from "@trpc/server";
 import { createInvoice } from "~/server/xendit";
+import { VAT_PERCENT } from "~/lib/pricing";
 
 export const reservationRouter = createTRPCRouter({
   // books a room and returns the Xendit page where the guest pays
@@ -60,7 +61,10 @@ export const reservationRouter = createTRPCRouter({
       }
 
       const confirmationCode = `IKX-${Math.floor(1000 + Math.random() * 9000)}`;
-      const totalAmount = room.nightlyRate * nights;
+      // same math as the checkout page: room charge plus 12% VAT
+      const roomTotal = room.nightlyRate * nights;
+      const totalAmount =
+        roomTotal + Math.round((roomTotal * VAT_PERCENT) / 100);
 
       // create the payment page first, so a failed payment setup saves nothing
       const invoiceUrl = await createInvoice(

@@ -4,17 +4,17 @@ const db = new PrismaClient();
 
 await db.room.createMany({
   data: [
-    { number: "103", name: "Archive Standard", type: "STANDARD", capacity: 1, nightlyRate: 3600, amenities: ["Single bed", "Reading nook"], imageUrl: "/rooms/103.jpg" },
-    { number: "104", name: "Harbor Standard", type: "STANDARD", capacity: 2, nightlyRate: 4200, amenities: ["Twin beds", "City view"], imageUrl: "/rooms/104.jpg" },
+    { number: "103", name: "Garden Standard", type: "STANDARD", capacity: 2, nightlyRate: 3600, amenities: ["Queen bed", "Garden view", "Minibar"], imageUrl: "/rooms/103.jpg" },
+    { number: "104", name: "Panorama Standard", type: "STANDARD", capacity: 2, nightlyRate: 4200, amenities: ["Twin beds", "City view"], imageUrl: "/rooms/104.jpg" },
     { number: "105", name: "City Standard", type: "STANDARD", capacity: 2, nightlyRate: 4000, amenities: ["Queen bed", "City view"], imageUrl: "/rooms/105.jpg" },
-    { number: "201", name: "Courtyard Deluxe", type: "DELUXE", capacity: 2, nightlyRate: 6400, amenities: ["Queen bed", "Courtyard view", "Minibar"], imageUrl: "/rooms/201.jpg" },
-    { number: "202", name: "Courtyard Deluxe", type: "DELUXE", capacity: 2, nightlyRate: 6400, amenities: ["Queen bed", "Courtyard view", "Minibar"], imageUrl: "/rooms/202.jpg" },
-    { number: "305", name: "Loft Deluxe", type: "DELUXE", capacity: 3, nightlyRate: 7100, amenities: ["King bed", "Workspace", "Free breakfast"], imageUrl: "/rooms/305.jpg" },
+    { number: "201", name: "Courtyard Deluxe", type: "DELUXE", capacity: 2, nightlyRate: 6400, amenities: ["Twin beds", "Courtyard view", "Workspace"], imageUrl: "/rooms/201.jpg" },
+    { number: "202", name: "Terrace Deluxe", type: "DELUXE", capacity: 2, nightlyRate: 6800, amenities: ["2 queen beds", "Private terrace", "Minibar"], imageUrl: "/rooms/202.jpg" },
+    { number: "305", name: "Loft Deluxe", type: "DELUXE", capacity: 3, nightlyRate: 7100, amenities: ["King bed", "Loft level", "Free breakfast"], imageUrl: "/rooms/305.jpg" },
     { number: "306", name: "Skyline Deluxe", type: "DELUXE", capacity: 3, nightlyRate: 7400, amenities: ["2 queen beds", "City view", "Minibar"], imageUrl: "/rooms/306.jpg" },
     { number: "402", name: "The Garret Suite", type: "SUITE", capacity: 2, nightlyRate: 8900, amenities: ["King bed", "Skylight", "Free breakfast"], imageUrl: "/rooms/402.jpg" },
-    { number: "501", name: "Atelier Suite", type: "SUITE", capacity: 4, nightlyRate: 10500, amenities: ["2 bedrooms", "Kitchenette", "Balcony"], imageUrl: "/rooms/501.jpg" },
+    { number: "501", name: "Atelier Suite", type: "SUITE", capacity: 4, nightlyRate: 10500, amenities: ["2 bedrooms", "Kitchenette", "Living area"], imageUrl: "/rooms/501.jpg" },
     { number: "502", name: "Harbour Suite", type: "SUITE", capacity: 4, nightlyRate: 9800, amenities: ["2 bedrooms", "Sea view", "Free breakfast"], imageUrl: "/rooms/502.jpg" },
-    { number: "503", name: "Lounge Suite", type: "SUITE", capacity: 3, nightlyRate: 9500, amenities: ["King bed", "Separate lounge", "Free breakfast"], imageUrl: "/rooms/503.jpg" },
+    { number: "503", name: "Lounge Suite", type: "SUITE", capacity: 3, nightlyRate: 9500, amenities: ["King bed", "Lounge area", "Free breakfast"], imageUrl: "/rooms/503.jpg" },
   ],
   skipDuplicates: true, // running the seed again won't add the rooms twice
 });
