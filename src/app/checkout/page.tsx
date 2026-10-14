@@ -95,7 +95,7 @@ export default function CheckoutPage() {
             RESERVATION CHECKOUT
           </p>
           <h1 className="text-3xl font-bold sm:text-4xl">
-            Review &amp; confirm
+            Review &amp; Confirm
           </h1>
         </div>
         <Link
