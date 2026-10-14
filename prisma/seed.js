@@ -4,7 +4,7 @@ const db = new PrismaClient();
 
 await db.room.createMany({
   data: [
-    { number: "103", name: "Garden Standard", type: "STANDARD", capacity: 2, nightlyRate: 3600, amenities: ["Double bed", "Garden view", "Minibar"], imageUrl: "/rooms/103.jpg" },
+    { number: "103", name: "Garden Standard", type: "STANDARD", capacity: 2, nightlyRate: 3600, amenities: ["Queen bed", "Garden view", "Minibar"], imageUrl: "/rooms/103.jpg" },
     { number: "104", name: "Panorama Standard", type: "STANDARD", capacity: 2, nightlyRate: 4200, amenities: ["Twin beds", "City view"], imageUrl: "/rooms/104.jpg" },
     { number: "105", name: "City Standard", type: "STANDARD", capacity: 2, nightlyRate: 4000, amenities: ["Queen bed", "City view"], imageUrl: "/rooms/105.jpg" },
     { number: "201", name: "Courtyard Deluxe", type: "DELUXE", capacity: 2, nightlyRate: 6400, amenities: ["Twin beds", "Courtyard view", "Workspace"], imageUrl: "/rooms/201.jpg" },
