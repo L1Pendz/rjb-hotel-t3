@@ -5,8 +5,7 @@ export default function CatalogPage() {
   return (
     <div className="flex-col">
       <div className="relative mt-5 h-64 overflow-hidden sm:h-80">
-        <div className="absolute inset-0 bg-linear-to-br from-slate-800 via-orange-950 to-stone-900" />
-        <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/50 to-black/10" />
+        <img className="absolute inset-0" src="/rooms/default.jpg" alt="Default Room" />
         <div className="absolute right-0 bottom-0 left-0 p-5 pb-16 text-white sm:p-8 sm:pb-16">
           <p className="text-xs font-semibold tracking-widest text-orange-300">
             BOUTIQUE STAYS · ILOILO CITY
