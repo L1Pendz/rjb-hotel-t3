@@ -91,7 +91,7 @@ export default function FindBookingPage() {
 
       <form onSubmit={handleSubmit} className="my-8 flex-col">
         <label htmlFor="code" className="text-xs text-gray-500">
-          Confirmation code
+          Booking Reference No.
         </label>
         <div className="mt-2 flex w-full max-w-md">
           <input
