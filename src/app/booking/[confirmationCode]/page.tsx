@@ -167,7 +167,7 @@ export default function ConfirmationPage() {
           <div className="mt-5 flex-col divide-y-2 divide-black bg-gray-200 p-3">
             <div className="flex flex-col pb-5">
               <p className="text-xs font-semibold tracking-widest text-orange-500">
-                BOOKING REFERENCE NO.
+                BOOKING REFERENCE
               </p>
               <div className="flex items-center gap-3">
                 <p className="text-3xl font-bold tracking-tight">

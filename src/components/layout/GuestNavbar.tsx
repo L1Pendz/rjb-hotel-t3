@@ -7,9 +7,9 @@ export const GuestNavbar: React.FC = () => {
       <Logo />
 
       <div className="flex gap-6 text-sm">
-        <NavLink href="/">Rooms</NavLink>
+        <NavLink href="/">Suites</NavLink>
 
-        <NavLink href="/find-booking">Find booking</NavLink>
+        <NavLink href="/find-booking">Manage booking</NavLink>
       </div>
     </nav>
   );
