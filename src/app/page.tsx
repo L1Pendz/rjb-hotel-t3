@@ -10,10 +10,9 @@ export default function CatalogPage() {
           <p className="text-xs font-semibold tracking-widest text-orange-300">
             BOUTIQUE STAYS · ILOILO CITY
           </p>
-          <h1 className="text-4xl font-bold sm:text-5xl">Rooms &amp; suites</h1>
+          <h1 className="text-4xl font-bold sm:text-5xl">Find your best stay</h1>
           <p className="mt-1 max-w-md text-sm text-gray-200">
-            Pick your dates to see what&apos;s free, then book in a couple of
-            minutes.
+            Pick your dates to see what&apos;s vacant, then book your stay, hassle free!
           </p>
         </div>
       </div>
