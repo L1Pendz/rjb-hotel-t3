@@ -18,7 +18,7 @@ export const GuestDetails: React.FC = () => {
         name="guestName"
         required
         maxLength={120}
-        placeholder="e.g. Jordan Ellison"
+        placeholder="e.g. Sherwin Sid S. Sañol"
       />
     </div>
   );
