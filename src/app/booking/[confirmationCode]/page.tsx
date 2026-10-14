@@ -53,10 +53,9 @@ export default function ConfirmationPage() {
 
   const cancel = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // a text input always gives back a string
-    const guestName =
-      (new FormData(event.currentTarget).get("guestName") as string | null) ??
-      "";
+    const guestName = String(
+      new FormData(event.currentTarget).get("guestName") ?? "",
+    );
 
     setCancelError("");
     try {
@@ -76,10 +75,10 @@ export default function ConfirmationPage() {
       <div className="relative border-b-2 py-5">
         <p className="text-xs font-medium text-orange-500">
           {reservation.status === "CANCELLED"
-            ? "CANCELLED"
+            ? "BOOKING CANCELLED"
             : reservation.status === "PENDING"
-              ? "CONFIRMED PAYMENT"
-              : reservation.status === "CONFIRMED"
+              ? "AWAITING PAYMENT"
+              : reservation.status === "PAYMENT CONFIRMED"
                 ? "RESERVATION CONFIRMED"
                 : reservation.status.replaceAll("_", " ")}
         </p>
