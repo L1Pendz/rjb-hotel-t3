@@ -147,7 +147,7 @@ export const InfoBar: React.FC = () => {
               (_, i) => i + MIN_GUESTS,
             ).map((count) => (
               <option key={count} value={count}>
-                {count} {count === 1 ? "guest" : "guests"}
+                &ensp;{count} {count === 1 ? "guest" : "guests"}
               </option>
             ))}
           </select>
