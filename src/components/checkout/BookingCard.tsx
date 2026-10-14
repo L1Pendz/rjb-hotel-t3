@@ -18,7 +18,7 @@ export const BookingCard: React.FC<BookingCardProps> = ({
   pending,
 }) => {
   return (
-    <div className="flex w-full flex-col lg:mt-5">
+    <div className="flex w-full flex-col lg:mt-17">
       <div className="aspect-2/1 overflow-hidden">
         <img
           className="h-full w-full object-cover"
