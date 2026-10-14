@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 
 import { addDays, today } from "~/lib/dates";
 import {
@@ -12,6 +12,9 @@ import {
   toSearchParams,
   type RoomQuery,
 } from "~/lib/search";
+
+const CLEAR_BUTTON_CLASSES =
+  "cursor-pointer text-gray-400 hover:text-orange-600";
 
 const FIELD_CLASSES =
   "w-full bg-transparent font-bold outline-none focus:text-orange-600 data-[empty=true]:font-normal data-[empty=true]:text-gray-400";
@@ -75,34 +78,58 @@ export const InfoBar: React.FC = () => {
           <label htmlFor="checkIn" className="text-xs">
             Check-in
           </label>
-          <input
-            id="checkIn"
-            type="date"
-            value={checkIn}
-            min={today()}
-            onChange={(event) => setCheckIn(event.target.value)}
-            // A native date input has no placeholder, so an empty one reads
-            // "mm/dd/yyyy". Grey that out until a date is picked.
-            data-empty={checkIn === ""}
-            className={FIELD_CLASSES}
-          />
+          <div className="flex items-center gap-2">
+            <input
+              id="checkIn"
+              type="date"
+              value={checkIn}
+              min={today()}
+              onChange={(event) => setCheckIn(event.target.value)}
+              // A native date input has no placeholder, so an empty one reads
+              // "mm/dd/yyyy". Grey that out until a date is picked.
+              data-empty={checkIn === ""}
+              className={FIELD_CLASSES}
+            />
+            {checkIn ? (
+              <button
+                type="button"
+                aria-label="Clear check-in"
+                onClick={() => setCheckIn("")}
+                className={CLEAR_BUTTON_CLASSES}
+              >
+                <X className="size-4" />
+              </button>
+            ) : null}
+          </div>
         </div>
 
         <div className="flex-3 p-3">
           <label htmlFor="checkOut" className="text-xs">
             Check-out
           </label>
-          <input
-            id="checkOut"
-            type="date"
-            value={checkOut}
-            // A stay is at least one night, so the earliest check-out is the
-            // day after whatever check-in currently says.
-            min={checkIn ? addDays(checkIn, 1) : addDays(today(), 1)}
-            onChange={(event) => setCheckOut(event.target.value)}
-            data-empty={checkOut === ""}
-            className={FIELD_CLASSES}
-          />
+          <div className="flex items-center gap-2">
+            <input
+              id="checkOut"
+              type="date"
+              value={checkOut}
+              // A stay is at least one night, so the earliest check-out is the
+              // day after whatever check-in currently says.
+              min={checkIn ? addDays(checkIn, 1) : addDays(today(), 1)}
+              onChange={(event) => setCheckOut(event.target.value)}
+              data-empty={checkOut === ""}
+              className={FIELD_CLASSES}
+            />
+            {checkOut ? (
+              <button
+                type="button"
+                aria-label="Clear check-out"
+                onClick={() => setCheckOut("")}
+                className={CLEAR_BUTTON_CLASSES}
+              >
+                <X className="size-4" />
+              </button>
+            ) : null}
+          </div>
         </div>
 
         <div className="flex-3 p-3">
