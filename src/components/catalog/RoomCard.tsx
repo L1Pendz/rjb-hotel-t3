@@ -39,7 +39,7 @@ export const RoomCard: React.FC<RoomCardProps> = ({ room, href }) => {
 
         <div className="flex items-center gap-2">
           <UserRound className="size-3" />
-          <span className="text-xs text-gray-500">Sleeps {room.capacity}</span>
+          <span className="text-xs text-gray-500">{room.capacity} people</span>
         </div>
 
         <div className="flex flex-wrap gap-2">
