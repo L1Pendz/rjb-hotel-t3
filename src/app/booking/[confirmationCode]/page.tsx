@@ -77,7 +77,7 @@ export default function ConfirmationPage() {
           {reservation.status === "CANCELLED"
             ? "CANCELLED"
             : reservation.status === "PENDING"
-              ? "AWAITING PAYMENT"
+              ? "CONFIRMED PAYMENT"
               : reservation.status === "CONFIRMED"
                 ? "RESERVATION CONFIRMED"
                 : reservation.status.replaceAll("_", " ")}
@@ -118,13 +118,13 @@ export default function ConfirmationPage() {
             <p className="text-xl font-bold">Guest details</p>
             <div className="mt-3 flex-col divide-y-2 divide-gray-400 border-2 border-gray-400">
               <div className="flex justify-between p-3">
-                <span className="text-xs text-gray-500">Name</span>
-                <span className="text-sm font-bold">
+                <span className="text-s text-gray-500">Name</span>
+                <span className="text-s font-bold">
                   {reservation.guestName}
                 </span>
               </div>
               <div className="flex justify-between p-3">
-                <span className="text-xs text-gray-500">Guests</span>
+                <span className="text-s text-gray-500">Guests</span>
                 <span className="text-sm font-bold">
                   {reservation.guestCount}
                 </span>
@@ -135,10 +135,6 @@ export default function ConfirmationPage() {
           {cancellable ? (
             <div className="mt-5 flex-col border-t-2 pt-5">
               <p className="text-xl font-bold">Cancel this booking</p>
-              <p className="my-2 max-w-lg text-xs text-gray-500">
-                Confirm the name the booking is under. Cancelling releases the
-                room. Contact the front desk about any payment already made.
-              </p>
               <form onSubmit={cancel} className="mt-2 flex w-full max-w-md">
                 <input
                   name="guestName"
@@ -159,12 +155,16 @@ export default function ConfirmationPage() {
                   {cancelError}
                 </p>
               ) : null}
+              <p className="my-2 max-w-100 text-xs text-gray-500">
+                Confirm the name the booking is under. Cancelling releases the
+                room. Contact the front desk about any payment already made.
+              </p>
             </div>
           ) : null}
         </div>
 
         <div className="flex-1">
-          <div className="mt-5 flex-col divide-y-2 divide-black bg-gray-200 p-3">
+          <div className="mt-17 flex-col divide-y-2 divide-black bg-gray-200 p-3">
             <div className="flex flex-col pb-5">
               <p className="text-xs font-semibold tracking-widest text-orange-500">
                 BOOKING REFERENCE
