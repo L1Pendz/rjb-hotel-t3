@@ -26,7 +26,7 @@ export default function RootLayout({
       <body>
         <TRPCReactProvider>
             <GuestNavbar />
-            <main className="min-h-screen p-4">{children}</main>
+            <main className="min-h-screen p-5 lg:px-40">{children}</main>
             <GuestFooter />
         </TRPCReactProvider>
       </body>
