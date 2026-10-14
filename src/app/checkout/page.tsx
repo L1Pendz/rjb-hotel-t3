@@ -48,7 +48,7 @@ export default function CheckoutPage() {
     try {
       const { invoiceUrl } = await createReservation.mutateAsync({
         roomId,
-        guestName: String(data.get("guestName") ?? ""),
+        guestName: (data.get("guestName") as string | null) ?? "",
         guestCount: query.guests,
         checkIn,
         checkOut,

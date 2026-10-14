@@ -53,9 +53,10 @@ export default function ConfirmationPage() {
 
   const cancel = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const guestName = String(
-      new FormData(event.currentTarget).get("guestName") ?? "",
-    );
+    // a text input always gives back a string
+    const guestName =
+      (new FormData(event.currentTarget).get("guestName") as string | null) ??
+      "";
 
     setCancelError("");
     try {
